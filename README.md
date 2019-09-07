@@ -1,7 +1,7 @@
 # Deathrun Warmup
 This plugin provides warmup for the deathrun gamemode. The warmup will be triggered every round.
 
-Alliedmods: https://forums.alliedmods.net/showthread.php?p=2666173#post2666173
+Alliedmods: https://forums.alliedmods.net/showthread.php?p=2666173
 
 # ConVars
 ```

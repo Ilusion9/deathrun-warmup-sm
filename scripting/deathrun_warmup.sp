@@ -26,7 +26,7 @@ int g_WarmupTimeLeft;
 
 public void OnPluginStart()
 {
-	LoadTranslations("deathrunwarmup.phrases");
+	LoadTranslations("deathrun_warmup.phrases");
 	
 	HookEvent("round_start", Event_RoundStart);
 	HookEvent("player_death", Event_PlayerDeath, EventHookMode_Pre);

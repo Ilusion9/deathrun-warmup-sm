@@ -9,7 +9,7 @@ public Plugin myinfo =
 {
     name = "Deathrun Warmup",
     author = "Ilusion9",
-    description = "Warmup for the deathrun gamemode",
+    description = "Warmup for deathrun",
     version = "1.0",
     url = "https://github.com/Ilusion9/"
 };

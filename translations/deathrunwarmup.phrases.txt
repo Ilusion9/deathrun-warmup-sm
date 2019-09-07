@@ -1,0 +1,23 @@
+"Phrases"
+{
+	"Warmup Chat Start"
+	{
+		"en"			"The warmup has started."
+	}
+
+	"Warmup Chat End"
+	{
+		"en"			"The warmup has ended."
+	}
+	
+	"Warmup Hud End"
+	{
+		"en"			"WARMUP HAS ENDED"
+	}
+	
+	"Warmup Hud Timeleft"
+	{
+		"#format"		"{1:02d}, {2:02d}"
+		"en"			"WARMUP {1}:{2}"
+	}
+}

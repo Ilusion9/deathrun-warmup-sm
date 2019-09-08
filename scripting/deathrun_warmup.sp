@@ -82,9 +82,7 @@ public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 public Action Timer_HandleWarmup(Handle timer, any data) 
 {
 	if (!g_WarmupTimeLeft)
-	{
-		PrintToChatAll(" \x04[DR]\x01 %t", "Warmup Chat End");
-		
+	{		
 		switch (g_Cvar_ShowHudTimeleft.IntValue)
 		{
 			case 1: {
@@ -97,9 +95,10 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 			}
 		}
 		
+		PrintToChatAll(" \x04[DR]\x01 %t", "Warmup Chat End");
 		g_Cvar_RespawnDeathCT.IntValue = 0;
-		g_Timer_Warmup = null;
 		
+		g_Timer_Warmup = null;
 		return Plugin_Stop;
 	}
 	

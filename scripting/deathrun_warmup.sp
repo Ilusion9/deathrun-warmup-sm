@@ -59,9 +59,11 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 
 	event.BroadcastDisabled = true;
 	
-	if (!IsFakeClient(client)) {
-		event.FireToClient(client);
+	if (IsFakeClient(client)) {
+		return;
 	}
+	
+	event.FireToClient(client);
 }
 
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)

@@ -125,6 +125,7 @@ stock void ShowSyncHudTextToAll(Handle sync, const char[] format, any ...)
 	}
 	
 	char buffer[198];
+	
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i)) 

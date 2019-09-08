@@ -59,11 +59,9 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 
 	event.BroadcastDisabled = true;
 	
-	if (IsFakeClient(client)) {
-		return;
+	if (!IsFakeClient(client)) {
+		event.FireToClient(client);
 	}
-	
-	event.FireToClient(client);
 }
 
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
@@ -127,7 +125,7 @@ stock void ShowSyncHudTextToAll(Handle sync, const char[] format, any ...)
 	}
 	
 	char buffer[198];
-	
+
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i)) 

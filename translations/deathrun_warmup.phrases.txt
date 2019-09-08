@@ -17,7 +17,7 @@
 	
 	"Warmup Hud Timeleft"
 	{
-		"#format"		"{1:02d}, {2:02d}"
+		"#format"		"{1:02d},{2:02d}"
 		"en"			"WARMUP {1}:{2}"
 	}
 }

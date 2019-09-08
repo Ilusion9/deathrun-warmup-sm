@@ -52,13 +52,12 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 	}
 	
 	int client = GetClientOfUserId(event.GetInt("userid"));
-	
 	if (!client || !IsClientInGame(client) || GetClientTeam(client) != CS_TEAM_CT) {
 		return;
 	}
 
 	event.BroadcastDisabled = true;
-
+	
 	if (!IsFakeClient(client)) {
 		event.FireToClient(client);
 	}
@@ -120,8 +119,11 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 
 stock void ShowSyncHudTextToAll(Handle sync, const char[] format, any ...)
 {
-	char buffer[254];
+	if (!sync) {
+		ThrowError("Invalid synchronizer object.");
+	}
 	
+	char buffer[198];
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i)) 

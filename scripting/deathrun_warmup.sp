@@ -10,7 +10,7 @@ public Plugin myinfo =
     name = "Deathrun Warmup",
     author = "Ilusion9",
     description = "Warmup for deathrun",
-    version = "1.0",
+    version = "1.1",
     url = "https://github.com/Ilusion9/"
 };
 
@@ -26,6 +26,10 @@ int g_WarmupTimeLeft;
 
 public void OnPluginStart()
 {
+	if (GetEngineVersion() != Engine_CSGO) {
+		SetFailState("This plugin is only intended for CS:GO");
+	}
+	
 	LoadTranslations("deathrun_warmup.phrases");
 	
 	HookEvent("round_start", Event_RoundStart);
@@ -52,15 +56,18 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 	}
 	
 	int client = GetClientOfUserId(event.GetInt("userid"));
+	
 	if (!client || !IsClientInGame(client) || GetClientTeam(client) != CS_TEAM_CT) {
 		return;
 	}
 
 	event.BroadcastDisabled = true;
 	
-	if (!IsFakeClient(client)) {
-		event.FireToClient(client);
+	if (IsFakeClient(client)) {
+		return;
 	}
+	
+	event.FireToClient(client);
 }
 
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
@@ -89,8 +96,11 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 			}
 			
 			case 2: {
-				SetHudTextParams(-1.0, 0.3, 3.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
-				ShowSyncHudTextToAll(g_Hud_Synchronizer, "%t", "Warmup Hud End");
+				if (g_Hud_Synchronizer)
+				{
+					SetHudTextParams(-1.0, 0.3, 3.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
+					ShowSyncHudTextToAll(g_Hud_Synchronizer, "%t", "Warmup Hud End");
+				}
 			}
 		}
 		
@@ -108,8 +118,11 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 		}
 		
 		case 2: {
-			SetHudTextParams(-1.0, 0.3, 1.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
-			ShowSyncHudTextToAll(g_Hud_Synchronizer, "%t", "Warmup Hud Timeleft", g_WarmupTimeLeft / 60, g_WarmupTimeLeft % 60);
+			if (g_Hud_Synchronizer)
+			{
+				SetHudTextParams(-1.0, 0.3, 1.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
+				ShowSyncHudTextToAll(g_Hud_Synchronizer, "%t", "Warmup Hud Timeleft", g_WarmupTimeLeft / 60, g_WarmupTimeLeft % 60);
+			}
 		}
 	}
 	
@@ -119,11 +132,8 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 
 stock void ShowSyncHudTextToAll(Handle sync, const char[] format, any ...)
 {
-	if (!sync) {
-		ThrowError("Invalid hud synchronizer handle");
-	}
-	
 	char buffer[198];
+	
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i)) 

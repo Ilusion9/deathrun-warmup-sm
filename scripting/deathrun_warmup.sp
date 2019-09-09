@@ -121,11 +121,10 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 stock void ShowSyncHudTextToAll(Handle sync, const char[] format, any ...)
 {
 	if (!sync) {
-		ThrowError("Invalid hud synchronizer object.");
+		ThrowError("Invalid hud synchronizer handle");
 	}
 	
 	char buffer[198];
-
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i)) 

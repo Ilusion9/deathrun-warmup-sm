@@ -27,7 +27,7 @@ int g_WarmupTimeLeft;
 public void OnPluginStart()
 {
 	if (GetEngineVersion() != Engine_CSGO) {
-		SetFailState("This plugin is only intended for CS:GO");
+		SetFailState("This plugin is only intended for CS:GO.");
 	}
 	
 	LoadTranslations("deathrun_warmup.phrases");

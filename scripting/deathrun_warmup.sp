@@ -52,7 +52,6 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 	}
 	
 	int client = GetClientOfUserId(event.GetInt("userid"));
-	
 	if (!client || !IsClientInGame(client) || GetClientTeam(client) != CS_TEAM_CT) {
 		return;
 	}

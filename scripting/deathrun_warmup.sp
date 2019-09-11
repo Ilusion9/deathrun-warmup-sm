@@ -130,10 +130,13 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 	return Plugin_Continue;
 }
 
-stock void ShowSyncHudTextToAll(Handle sync, const char[] format, any ...)
+stock void ShowSyncHudTextToAll(Handle hudSync, const char[] format, any ...)
 {
-	char buffer[198];
+	if (!hudSync) {
+		ThrowError("Invalid hud synchronizer handle");
+	}
 	
+	char buffer[198];
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i)) 
@@ -141,8 +144,8 @@ stock void ShowSyncHudTextToAll(Handle sync, const char[] format, any ...)
 			SetGlobalTransTarget(i);
 			VFormat(buffer, sizeof(buffer), format, 3);
 			
-			ClearSyncHud(i, sync);
-			ShowSyncHudText(i, sync, buffer);
+			ClearSyncHud(i, hudSync);
+			ShowSyncHudText(i, hudSync, buffer);
 		}
 	}
 }

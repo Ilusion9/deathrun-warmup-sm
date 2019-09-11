@@ -130,12 +130,8 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 	return Plugin_Continue;
 }
 
-stock void ShowSyncHudTextToAll(Handle hudSync, const char[] format, any ...)
+void ShowSyncHudTextToAll(Handle hudSync, const char[] format, any ...)
 {
-	if (!hudSync) {
-		ThrowError("Invalid hud synchronizer handle");
-	}
-	
 	char buffer[198];
 	for (int i = 1; i <= MaxClients; i++)
 	{

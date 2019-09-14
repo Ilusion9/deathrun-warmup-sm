@@ -26,10 +26,6 @@ int g_WarmupTimeLeft;
 
 public void OnPluginStart()
 {
-	if (GetEngineVersion() != Engine_CSGO) {
-		SetFailState("This plugin is for CSGO only.");
-	}
-	
 	LoadTranslations("deathrun_warmup.phrases");
 	
 	HookEvent("round_start", Event_RoundStart);
@@ -51,19 +47,22 @@ public void OnMapEnd()
 
 public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast) 
 {
-	if (!g_Timer_Warmup || !g_Cvar_HideWorldKills.BoolValue || event.GetInt("attacker")) {
+	if (!g_Timer_Warmup || !g_Cvar_HideWorldKills.BoolValue || event.GetInt("attacker"))
+	{
 		return;
 	}
 	
 	int client = GetClientOfUserId(event.GetInt("userid"));
 	
-	if (!client || !IsClientInGame(client) || GetClientTeam(client) != CS_TEAM_CT) {
+	if (!client || !IsClientInGame(client) || GetClientTeam(client) != CS_TEAM_CT)
+	{
 		return;
 	}
 
 	event.BroadcastDisabled = true;
 	
-	if (IsFakeClient(client)) {
+	if (IsFakeClient(client))
+	{
 		return;
 	}
 	
@@ -74,7 +73,8 @@ public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 {
 	delete g_Timer_Warmup;
 
-	if (GameRules_GetProp("m_bWarmupPeriod") || !g_Cvar_WarmupDuration.BoolValue) {
+	if (GameRules_GetProp("m_bWarmupPeriod") || !g_Cvar_WarmupDuration.BoolValue)
+	{
 		return;
 	}
 	
@@ -91,11 +91,13 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 	{		
 		switch (g_Cvar_ShowHudTimeleft.IntValue)
 		{
-			case 1: {
+			case 1:
+			{
 				PrintHintTextToAll("%t", "Warmup Hud End");
 			}
 			
-			case 2: {
+			case 2:
+			{
 				if (g_Hud_Synchronizer)
 				{
 					SetHudTextParams(-1.0, 0.3, 3.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
@@ -113,11 +115,13 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 	
 	switch (g_Cvar_ShowHudTimeleft.IntValue)
 	{
-		case 1: {
+		case 1:
+		{
 			PrintHintTextToAll("%t", "Warmup Hud Timeleft", g_WarmupTimeLeft / 60, g_WarmupTimeLeft % 60);
 		}
 		
-		case 2: {
+		case 2:
+		{
 			if (g_Hud_Synchronizer)
 			{
 				SetHudTextParams(-1.0, 0.3, 1.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
@@ -133,6 +137,7 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 void ShowSyncHudTextToAll(Handle hudSync, const char[] format, any ...)
 {
 	char buffer[198];
+	
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i)) 

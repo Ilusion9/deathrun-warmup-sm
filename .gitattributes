@@ -1,2 +1,1 @@
-* linguist-vendored
-*.sp linguist-vendored=true
+*.sp linguist-detectable=true

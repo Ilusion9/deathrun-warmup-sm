@@ -33,7 +33,7 @@ public void OnPluginStart()
 	g_Cvar_RespawnDeathCT = FindConVar("mp_respawn_on_death_ct");
 	
 	g_Cvar_WarmupDuration = CreateConVar("dr_warmup_duration", "30", "How long the warmup period lasts? (0 - disable)", FCVAR_NONE, true, 0.0);
-	g_Cvar_HideWorldKills = CreateConVar("dr_warmup_hide_world_kills", "1", "Hide world kills from killfeed in warmup period?", FCVAR_NONE, true, 0.0, true, 1.0);
+	g_Cvar_HideWorldKills = CreateConVar("dr_warmup_hide_world_kills", "1", "Hide kills made by world (or traps) from killfeed in warmup period?", FCVAR_NONE, true, 0.0, true, 1.0);
 	g_Cvar_ShowHudTimeleft = CreateConVar("dr_warmup_timeleft_hud", "2", "Show the warmup's timeleft in hud? (0 - disable, 1 - hint, 2 - hud)", FCVAR_NONE, true, 0.0, true, 2.0);
 	
 	g_Hud_Synchronizer = CreateHudSynchronizer();

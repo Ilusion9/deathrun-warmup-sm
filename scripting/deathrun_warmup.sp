@@ -1,9 +1,8 @@
-#pragma semicolon 1
-#pragma newdecls required
-
 #include <sourcemod>
 #include <sdktools>
 #include <cstrike>
+
+#pragma newdecls required
 
 public Plugin myinfo =
 {
@@ -33,9 +32,9 @@ public void OnPluginStart()
 	
 	g_Cvar_RespawnDeathCT = FindConVar("mp_respawn_on_death_ct");
 	
-	g_Cvar_WarmupDuration = CreateConVar("dr_warmup_duration", "30", "How long the warmup period lasts?", 0, true, 0.0);
-	g_Cvar_HideWorldKills = CreateConVar("dr_warmup_hide_world_kills", "1", "Hide world kills from killfeed in warmup period?", 0, true, 0.0, true, 1.0);
-	g_Cvar_ShowHudTimeleft = CreateConVar("dr_warmup_timeleft_hud", "2", "Show the warmup's timeleft in hud? (0 - no, 1 - hint, 2 - hud)", 0, true, 0.0, true, 2.0);
+	g_Cvar_WarmupDuration = CreateConVar("dr_warmup_duration", "30", "How long the warmup period lasts? (0 - disable)", FCVAR_NONE, true, 0.0);
+	g_Cvar_HideWorldKills = CreateConVar("dr_warmup_hide_world_kills", "1", "Hide world kills from killfeed in warmup period?", FCVAR_NONE, true, 0.0, true, 1.0);
+	g_Cvar_ShowHudTimeleft = CreateConVar("dr_warmup_timeleft_hud", "2", "Show the warmup's timeleft in hud? (0 - disable, 1 - hint, 2 - hud)", FCVAR_NONE, true, 0.0, true, 2.0);
 	
 	g_Hud_Synchronizer = CreateHudSynchronizer();
 }
@@ -61,25 +60,24 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 
 	event.BroadcastDisabled = true;
 	
-	if (IsFakeClient(client))
+	if (!IsFakeClient(client))
 	{
-		return;
+		event.FireToClient(client);
 	}
-	
-	event.FireToClient(client);
 }
 
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 {
 	delete g_Timer_Warmup;
-
-	if (GameRules_GetProp("m_bWarmupPeriod") || !g_Cvar_WarmupDuration.BoolValue)
+	
+	/* IsWarmupPeriod - default warmup period (before the match starts) */
+	if (IsWarmupPeriod() || !g_Cvar_WarmupDuration.BoolValue)
 	{
 		return;
 	}
 	
 	g_WarmupTimeLeft = g_Cvar_WarmupDuration.IntValue;
-	g_Cvar_RespawnDeathCT.IntValue = 1;
+	g_Cvar_RespawnDeathCT.SetInt(1);
 	
 	g_Timer_Warmup = CreateTimer(1.0, Timer_HandleWarmup, _, TIMER_REPEAT);
 	PrintToChatAll(" \x04[DR]\x01 %t", "Warmup Chat Start");
@@ -89,44 +87,38 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 {
 	if (!g_WarmupTimeLeft)
 	{		
-		switch (g_Cvar_ShowHudTimeleft.IntValue)
+		if (g_Cvar_ShowHudTimeleft.IntValue == 1)
 		{
-			case 1:
+			PrintHintTextToAll("%t", "Warmup Hud End");
+		}
+		
+		else if (g_Cvar_ShowHudTimeleft.IntValue == 2)
+		{
+			if (g_Hud_Synchronizer)
 			{
-				PrintHintTextToAll("%t", "Warmup Hud End");
-			}
-			
-			case 2:
-			{
-				if (g_Hud_Synchronizer)
-				{
-					SetHudTextParams(-1.0, 0.3, 3.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
-					ShowSyncHudTextToAll(g_Hud_Synchronizer, "%t", "Warmup Hud End");
-				}
+				SetHudTextParams(-1.0, 0.3, 3.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
+				ShowSyncHudTextToAll(g_Hud_Synchronizer, "%t", "Warmup Hud End");
 			}
 		}
 		
 		PrintToChatAll(" \x04[DR]\x01 %t", "Warmup Chat End");
-		g_Cvar_RespawnDeathCT.IntValue = 0;
+		g_Cvar_RespawnDeathCT.SetInt(0);
 		
 		g_Timer_Warmup = null;
 		return Plugin_Stop;
 	}
 	
-	switch (g_Cvar_ShowHudTimeleft.IntValue)
+	if (g_Cvar_ShowHudTimeleft.IntValue == 1)
 	{
-		case 1:
+		PrintHintTextToAll("%t", "Warmup Hud Timeleft", g_WarmupTimeLeft / 60, g_WarmupTimeLeft % 60);
+	}
+	
+	else if (g_Cvar_ShowHudTimeleft.IntValue == 2)
+	{
+		if (g_Hud_Synchronizer)
 		{
-			PrintHintTextToAll("%t", "Warmup Hud Timeleft", g_WarmupTimeLeft / 60, g_WarmupTimeLeft % 60);
-		}
-		
-		case 2:
-		{
-			if (g_Hud_Synchronizer)
-			{
-				SetHudTextParams(-1.0, 0.3, 1.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
-				ShowSyncHudTextToAll(g_Hud_Synchronizer, "%t", "Warmup Hud Timeleft", g_WarmupTimeLeft / 60, g_WarmupTimeLeft % 60);
-			}
+			SetHudTextParams(-1.0, 0.3, 1.20, 255, 255, 255, 1, 0, 0.0, 0.0, 0.0);
+			ShowSyncHudTextToAll(g_Hud_Synchronizer, "%t", "Warmup Hud Timeleft", g_WarmupTimeLeft / 60, g_WarmupTimeLeft % 60);
 		}
 	}
 	
@@ -136,6 +128,11 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 
 void ShowSyncHudTextToAll(Handle hudSync, const char[] format, any ...)
 {
+	if (!hudSync)
+	{
+		ThrowError("Invalid hud synchronizer handle");
+	}
+	
 	char buffer[198];
 	
 	for (int i = 1; i <= MaxClients; i++)
@@ -149,4 +146,9 @@ void ShowSyncHudTextToAll(Handle hudSync, const char[] format, any ...)
 			ShowSyncHudText(i, hudSync, buffer);
 		}
 	}
+}
+
+bool IsWarmupPeriod()
+{
+	return view_as<bool>(GameRules_GetProp("m_bWarmupPeriod"));
 }

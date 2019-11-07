@@ -6,11 +6,11 @@
 
 public Plugin myinfo =
 {
-    name = "Deathrun Warmup",
-    author = "Ilusion9",
-    description = "Warmup for deathrun",
-    version = "1.1",
-    url = "https://github.com/Ilusion9/"
+	name = "Deathrun Warmup",
+	author = "Ilusion9",
+	description = "Warmup for deathrun",
+	version = "1.1",
+	url = "https://github.com/Ilusion9/"
 };
 
 Handle g_Timer_Warmup;

@@ -37,6 +37,7 @@ public void OnPluginStart()
 	g_Cvar_ShowHudTimeleft = CreateConVar("dr_warmup_timeleft_hud", "2", "Show the warmup's timeleft in hud? (0 - disable, 1 - hint, 2 - hud)", FCVAR_NONE, true, 0.0, true, 2.0);
 	
 	g_Hud_Synchronizer = CreateHudSynchronizer();
+	AutoExecConfig(true, "deathrun_warmup");
 }
 
 public void OnMapEnd()

@@ -52,14 +52,12 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 	}
 	
 	int client = GetClientOfUserId(event.GetInt("userid"));
-	
 	if (!client || !IsClientInGame(client) || GetClientTeam(client) != CS_TEAM_CT)
 	{
 		return;
 	}
-
-	event.BroadcastDisabled = true;
 	
+	event.BroadcastDisabled = true;
 	if (!IsFakeClient(client))
 	{
 		event.FireToClient(client);
@@ -69,8 +67,6 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 {
 	delete g_Timer_Warmup;
-	
-	/* IsWarmupPeriod - default warmup period (before the match starts) */
 	if (IsWarmupPeriod() || !g_Cvar_WarmupDuration.BoolValue)
 	{
 		return;
@@ -134,7 +130,6 @@ void ShowSyncHudTextToAll(Handle hudSync, const char[] format, any ...)
 	}
 	
 	char buffer[198];
-	
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i)) 

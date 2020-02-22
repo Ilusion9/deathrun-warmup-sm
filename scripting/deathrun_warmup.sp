@@ -1,7 +1,7 @@
 #include <sourcemod>
 #include <sdktools>
 #include <cstrike>
-#include <colorlib>
+#include <colorlib_sample>
 #pragma newdecls required
 
 public Plugin myinfo =
@@ -77,7 +77,7 @@ public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 	g_Cvar_RespawnDeathCT.SetInt(1);
 	
 	g_Timer_Warmup = CreateTimer(1.0, Timer_HandleWarmup, _, TIMER_REPEAT);
-	CPrintToChatAll("{green}[DR]{default} %t", "Warmup Chat Start");
+	CPrintToChatAll("\x04[DR]\x01 %t", "Warmup Chat Start");
 }
 
 public Action Timer_HandleWarmup(Handle timer, any data) 
@@ -98,7 +98,7 @@ public Action Timer_HandleWarmup(Handle timer, any data)
 			}
 		}
 		
-		CPrintToChatAll("{green}[DR]{default} %t", "Warmup Chat End");
+		CPrintToChatAll("\x04[DR]\x01 %t", "Warmup Chat End");
 		g_Cvar_RespawnDeathCT.SetInt(0);
 		
 		g_Timer_Warmup = null;

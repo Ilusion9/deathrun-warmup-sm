@@ -1,6 +1,9 @@
 # Description
 This plugin provides warmup for the deathrun gamemode. The warmup will be triggered every round. Designed only for CS:GO.
 
+# Dependencies
+Sourcecolors (include file) - https://github.com/Ilusion9/sourcecolors-inc-sm
+
 # Alliedmods
 https://forums.alliedmods.net/showthread.php?p=2666173
 

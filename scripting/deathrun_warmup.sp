@@ -1,7 +1,7 @@
 #include <sourcemod>
 #include <sdktools>
 #include <cstrike>
-#include <colorlib_sample>
+#include <sourcecolors>
 #pragma newdecls required
 
 public Plugin myinfo =
